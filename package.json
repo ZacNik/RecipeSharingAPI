@@ -1,0 +1,19 @@
+{
+  "name": "recipe-sharing-backend",
+  "version": "0.0.0",
+  "description": "RecipeSharingBackend",
+  "main": "server.js",
+  "author": {
+    "name": ""
+  },
+  "devDependencies": {
+    "eslint": "^8.21.0"
+  },
+  "eslintConfig": {},
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "express-validator": "^7.0.1",
+    "mongoose": "^8.3.1"
+  }
+}

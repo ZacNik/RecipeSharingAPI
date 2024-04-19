@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "RecipeSharingBackend", "RecipeSharingBackend.njsproj", "{ED89A550-C2BB-4B56-8834-E65017DD06DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ED89A550-C2BB-4B56-8834-E65017DD06DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED89A550-C2BB-4B56-8834-E65017DD06DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED89A550-C2BB-4B56-8834-E65017DD06DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED89A550-C2BB-4B56-8834-E65017DD06DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C9D2D074-17E8-4BA2-9A7D-3DBE0331245E}
+	EndGlobalSection
+EndGlobal
