@@ -5,6 +5,8 @@ var morgan = require('morgan');
 var cors = require('cors');
 var rateLimit = require('express-rate-limit');
 var { Recipe, User, Comment } = require('./models');
+var helmet = require('helmet');
+var bcrypt = require('bcrypt');
 
 var app = express();
 var port = process.env.PORT || 3000;
@@ -191,6 +193,8 @@ app.delete('/recipes/:recipeId/comments/:commentId', async (req, res) => {
     }
 });
 
+var saltRounds = 10;
+
 // Create a new user
 app.post(
     '/users',
@@ -200,22 +204,29 @@ app.post(
             .trim()
             .notEmpty().withMessage('Username is required')
             .isAlphanumeric().withMessage('Username must be alphanumeric'),
+            .isLength({ min: 6, max: 20 }).withMessage('Username must be between 6 and 20 characters'),
         body('email')
             .normalizeEmail().isEmail().withMessage('Invalid email address'),
         body('password')
             .trim()
             .notEmpty().withMessage('Password is required')
             .isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
+            .matches(/\d/).withMessage('Password must contain at least one number')
+            .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
+            .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter')
+            .matches(/[\W_]/).withMessage('Password must contain at least one special character')
     ],
     async (req, res) => {
-        const errors = validationResult(req);
+        var errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
 
         // Route logic
         try {
-            const newUser = new User(req.body);
+            var hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+            req.body.password = hashedPassword;
+            var newUser = new User(req.body);
             await newUser.save();
             res.status(201).json(newUser);
         } catch (err) {
@@ -230,7 +241,7 @@ app.use(morgan('combined'));
 // Cors will help ensure that the API can be accessed from multiple domains effectively
 app.use(cors());
 
-//Rate limiter to help protect against denial-of-service attacks
+// Rate limiter to help protect against denial-of-service attacks
 var limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 250, // Limit each IP to 250 requests per windowMs
@@ -238,6 +249,9 @@ var limiter = rateLimit({
     legacyHeaders: false, // Disable 'X-RateLimit-*' headers
 });
 app.use(limiter);
+
+// Helmet will take care of using HTTPS
+app.use(helmet());
 
 // Error handling
 app.use((err, req, res, next) => {
