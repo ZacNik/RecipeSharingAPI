@@ -1,6 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var { body, validationResult } = require('express-validator');
+var { body, param, validationResult } = require('express-validator');
 var morgan = require('morgan');
 var cors = require('cors');
 var rateLimit = require('express-rate-limit');
@@ -203,7 +203,7 @@ app.post(
         body('username')
             .trim()
             .notEmpty().withMessage('Username is required')
-            .isAlphanumeric().withMessage('Username must be alphanumeric'),
+            .isAlphanumeric().withMessage('Username must be alphanumeric')
             .isLength({ min: 6, max: 20 }).withMessage('Username must be between 6 and 20 characters'),
         body('email')
             .normalizeEmail().isEmail().withMessage('Invalid email address'),
@@ -260,6 +260,18 @@ app.use((err, req, res, next) => {
         error: 'Something broke!',
         message: err.message
     });
+});
+
+// Middleware to set Content-Security-Policy header
+app.use((req, res, next) => {
+    // Define the CSP policy
+    const cspPolicy = "default-src 'self' https://localhost:1337/favicon.ico";
+
+    // Set the CSP header in the response
+    res.setHeader('Content-Security-Policy', cspPolicy);
+
+    // Call the next middleware
+    next();
 });
 
 // Check connection
