@@ -18,8 +18,7 @@ app.use(express.json());
 
 //connect to mongoDB
 mongoose.connect(mongoUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+
 })
     .then(() => {
         console.log('Connected to MongoDB');
@@ -67,6 +66,10 @@ app.post(
         }
     }
 );
+
+app.get('/favicon.ico', (req, res) => {
+    res.status(404).end(); // Or you can respond with an empty 200 OK if you prefer
+});
 
 // Get all recipes
 app.get('/recipes', async (req, res) => {
@@ -265,7 +268,12 @@ app.use((err, req, res, next) => {
 // Middleware to set Content-Security-Policy header
 app.use((req, res, next) => {
     // Define the CSP policy
-    const cspPolicy = "default-src 'self' https://localhost:1337/favicon.ico";
+    const cspPolicy = "default-src 'self' http://localhost:3000; " +
+        "img-src 'self' data:; " +
+        "style-src 'self' 'unsafe-inline'; " +
+        "script-src 'self' 'unsafe-inline'; " +
+        "font-src 'self'; " +
+        "frame-src 'none'";
 
     // Set the CSP header in the response
     res.setHeader('Content-Security-Policy', cspPolicy);
@@ -276,7 +284,7 @@ app.use((req, res, next) => {
 
 // Check connection
 app.listen(port, () => {
-    console.log('Server running on port ${port}');
+    console.log(`Server running on port ${port}`);
 })
 
 
