@@ -68,7 +68,7 @@ app.post(
 );
 
 app.get('/favicon.ico', (req, res) => {
-    res.status(404).end(); // Or you can respond with an empty 200 OK if you prefer
+    res.status(404).end();
 });
 
 // Get all recipes
@@ -241,7 +241,7 @@ app.post(
 // Middleware library used for logging purposes
 app.use(morgan('combined'));
 
-// Cors will help ensure that the API can be accessed from multiple domains effectively
+// Cors will help ensure that the API can be accessed from multiple domains
 app.use(cors());
 
 // Rate limiter to help protect against denial-of-service attacks
@@ -268,7 +268,7 @@ app.use((err, req, res, next) => {
 // Middleware to set Content-Security-Policy header
 app.use((req, res, next) => {
     // Define the CSP policy
-    const cspPolicy = "default-src 'self' http://localhost:3000; " +
+    const cspPolicy = "default-src 'self' http://localhost:1337; " +
         "img-src 'self' data:; " +
         "style-src 'self' 'unsafe-inline'; " +
         "script-src 'self' 'unsafe-inline'; " +
@@ -286,6 +286,3 @@ app.use((req, res, next) => {
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 })
-
-
-
