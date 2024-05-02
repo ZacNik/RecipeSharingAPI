@@ -133,7 +133,7 @@ app.put('/recipes/:id', async (req, res) => {
 // Delete a recipe by ID
 app.delete('/recipes/:id', async (req, res) => {
     try {
-        var deletedRecipe = await Recipe.findByIdAndRemove(req.params.id);
+        var deletedRecipe = await Recipe.findByIdAndDelete(req.params.id);
         if (deletedRecipe) {
             res.json({ message: 'Recipe deleted' });
         } else {
@@ -149,7 +149,7 @@ app.post('/recipes/:id/comments', async (req, res) => {
     try {
         var newComment = new Comment({
             text: req.body.text,
-            author: req.body.author,
+            author: req.params.id,
             recipe: req.params.id,
         });
         await newComment.save();
