@@ -149,7 +149,7 @@ app.post('/recipes/:id/comments', async (req, res) => {
     try {
         var newComment = new Comment({
             text: req.body.text,
-            author: req.params.id,
+            author: req.body.author,
             recipe: req.params.id,
         });
         await newComment.save();
